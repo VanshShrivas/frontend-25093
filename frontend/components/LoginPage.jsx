@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const allowedDomains = ["itbhu.ac.in", "iitbhu.ac.in"];
 
-export default function LoginPage({ onLogin }) {
+export default function LoginPage({ onLogin,handleGoogleLogin }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
