@@ -19,7 +19,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/dashboard/account" /> : <LoginPage onLogin={handleLogin({setUser})} handleGoogleLogin={handleGoogleLogin} />} />
+        <Route path="/" element={user ? <Navigate to="/dashboard/account" /> : <LoginPage onLogin={setUser} handleGoogleLogin={handleGoogleLogin} />} />
 
         <Route path="/dashboard" element={user ? <DashboardLayout user={user} /> : <Navigate to="/" />}>
           <Route path="account" element={<Account />} />
