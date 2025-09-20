@@ -17,13 +17,24 @@ const googleProvider = new GoogleAuthProvider();
 
 // HANDLE GOOGLE LOGIN
 const handleGoogleLogin = async (setError) => {
+  // const navigate = useNavigate()
     try {
         const result = await signInWithPopup(auth, googleProvider);
         console.log('Google sign in completed with user data -> ',result.user);
-        setError('');
+        const domain = result.user.email.split("@")[1];
+        if(["itbhu.ac.in", "iitbhu.ac.in"].includes(domain)){
+          setError('')
+          return result.user.email;
+        }
+        else{
+          setError('Please use your institute email ID.')
+          return null
+        }
+         
     } catch (err) {
         console.log(err);
-        setError('Google sign in failed');
+        return null;
+        // setError('Google sign in failed');
     }
 }
 

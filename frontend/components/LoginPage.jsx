@@ -1,11 +1,13 @@
 // components/LoginPage.jsx
 import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+
 
 const allowedDomains = ["itbhu.ac.in", "iitbhu.ac.in"];
 
 export default function LoginPage({ onLogin,handleGoogleLogin }) {
   const [email, setEmail] = useState("");
-  
+  // const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleLogin = () => {
@@ -16,6 +18,36 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
       setError("Please use your institute email ID.");
     }
   };
+
+  const handleButtonClick = async (setError) => {
+     try {
+      const user = await handleGoogleLogin(setError); // call function from Config.js
+      onLogin(user); // ✅ set user state in App.jsx
+      // navigate("/dashboard/account"); // ✅ navigate to account
+      setError("");
+    } catch (err) {
+      console.log(err);
+      setError(err.message);
+    }
+  }
+
+  
+         const dividerStyle = {
+          display: 'flex',
+          alignItems: 'center',
+          textAlign: 'center',
+          margin: '25px 0',
+          color: '#aaa',
+          };
+
+        const lineStyle = {
+          flex: 1,
+          borderBottom: '1px solid #ddd',
+        };
+
+      const spanStyle = {
+        padding: '0 10px',
+      };
 
   return (
     <div className="flex items-center justify-center h-screen bg-blue-50">
@@ -34,31 +66,15 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
 
       
 
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+        {/* {error && <p className="text-red-500 text-sm mb-2">{error}</p>} */}
 
         <button
-          onClick={onLogin}
+          onClick={handleLogin}
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Login
         </button>
-
-         const dividerStyle = {
-          display: 'flex',
-          alignItems: 'center',
-          textAlign: 'center',
-          margin: '25px 0',
-          color: '#aaa',
-          };
-
-        const lineStyle = {
-          flex: 1,
-          borderBottom: '1px solid #ddd',
-        };
-
-      const spanStyle = {
-        padding: '0 10px',
-      };
+    
 
         <div style={dividerStyle}>
             <div style={lineStyle}></div>
@@ -67,11 +83,15 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
         </div>
 
         
-        <button type="button" className="google-btn" onClick={handleGoogleLogin}>
+        <button type="button"
+         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          onClick={handleButtonClick(setError)}>
             {/*<img src={googleLogo} alt="Google logo"/>*/}
 
             Sign up with Google
         </button>
+
+        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
       </div>
     </div>
