@@ -39,6 +39,37 @@ export default function LoginPage({ onLogin }) {
         >
           Login
         </button>
+
+         const dividerStyle = {
+          display: 'flex',
+          alignItems: 'center',
+          textAlign: 'center',
+          margin: '25px 0',
+          color: '#aaa',
+          };
+
+        const lineStyle = {
+          flex: 1,
+          borderBottom: '1px solid #ddd',
+        };
+
+      const spanStyle = {
+        padding: '0 10px',
+      };
+
+        <div style={dividerStyle}>
+            <div style={lineStyle}></div>
+            <span style={spanStyle}>Or</span>
+            <div style={lineStyle}></div>
+        </div>
+
+        
+        <button type="button" className="google-btn" onClick={handleGoogleLogin}>
+            {/*<img src={googleLogo} alt="Google logo"/>*/}
+
+            Sign up with Google
+        </button>
+
       </div>
     </div>
   );
