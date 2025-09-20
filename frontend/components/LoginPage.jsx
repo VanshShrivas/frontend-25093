@@ -5,6 +5,7 @@ const allowedDomains = ["itbhu.ac.in", "iitbhu.ac.in"];
 
 export default function LoginPage({ onLogin,handleGoogleLogin }) {
   const [email, setEmail] = useState("");
+  const [password,setPassord] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = () => {
@@ -31,10 +32,18 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
           className="border border-gray-300 rounded p-2 w-full mb-3"
         />
 
+        <input
+          type="password"
+          placeholder="Enter password"
+          value={email}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border border-gray-300 rounded p-2 w-full mb-3"
+        />
+
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
         <button
-          onClick={handleLogin}
+          onClick={handleLogin(email,password)}
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Login
