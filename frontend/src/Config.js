@@ -27,4 +27,13 @@ const handleGoogleLogin = async (setError) => {
     }
 }
 
-export { auth, googleProvider, handleGoogleLogin }
+const handleLogin = async (email, password) => {
+  try {
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    return userCredential.user;  // Return the user object if login is successful
+  } catch (error) {
+    throw new Error(error.message);  // If an error occurs, throw an error message
+  }
+};
+
+export { auth, googleProvider, handleGoogleLogin,handleLogin }
