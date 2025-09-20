@@ -1,5 +1,7 @@
 // components/LoginPage.jsx
 import React, { useState } from "react";
+import {handlePasswordLogin} from "../src/Config.js";
+
 // import { useNavigate } from "react-router-dom";
 
 
@@ -7,23 +9,30 @@ const allowedDomains = ["itbhu.ac.in", "iitbhu.ac.in"];
 
 export default function LoginPage({ onLogin,handleGoogleLogin }) {
   const [email, setEmail] = useState("");
+  const [password,setPassword] = useState("");
   // const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleLogin = () => {
     const domain = email.split("@")[1];
     if (allowedDomains.includes(domain)) {
+      const check =  handlePasswordLogin(email,password);
+      if(check)
       onLogin(email);
+      else{
+        onLogin(null)
+      }
+
     } else {
       setError("Please use your institute email ID.");
     }
   };
 
-  const handleButtonClick = async (setError) => {
+  const handleButtonClick = async () => {
      try {
       const user = await handleGoogleLogin(setError); // call function from Config.js
-      onLogin(user); // ✅ set user state in App.jsx
-      // navigate("/dashboard/account"); // ✅ navigate to account
+      onLogin(user); //  set user state in App.jsx
+      // navigate("/dashboard/account"); //  navigate to account
       setError("");
     } catch (err) {
       console.log(err);
@@ -64,6 +73,14 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
           className="border border-gray-300 rounded p-2 w-full mb-3"
         />
 
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border border-gray-300 rounded p-2 w-full mb-3"
+        />
+
       
 
         {/* {error && <p className="text-red-500 text-sm mb-2">{error}</p>} */}
@@ -85,7 +102,7 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
         
         <button type="button"
          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          onClick={handleButtonClick(setError)}>
+          onClick={handleButtonClick}>
             {/*<img src={googleLogo} alt="Google logo"/>*/}
 
             Sign up with Google

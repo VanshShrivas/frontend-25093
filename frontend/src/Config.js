@@ -38,7 +38,7 @@ const handleGoogleLogin = async (setError) => {
     }
 }
 
-const handleLogin = async (email, password) => {
+const handlePasswordLogin = async (email, password) => {
   try {
     const userCredential = await auth.signInWithEmailAndPassword(email, password);
     return userCredential.user;  // Return the user object if login is successful
@@ -47,4 +47,4 @@ const handleLogin = async (email, password) => {
   }
 };
 
-export { auth, googleProvider, handleGoogleLogin,handleLogin }
+export { auth, googleProvider, handleGoogleLogin,handlePasswordLogin }
