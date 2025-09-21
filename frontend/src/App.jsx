@@ -11,14 +11,17 @@ import Portfolio from "../pages/Portfolio";
 import Attendance from "../pages/Attendance";
 import RaiseTicket from "../pages/RaiseTicket";
 import MyTickets from "../pages/MyTickets";
+import {handleGoogleLogin,handlePasswordLogin} from "./Config.js";
 
 export default function App() {
   const [user, setUser] = useState(null);
 
+  
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/dashboard/account" /> : <LoginPage onLogin={setUser} />} />
+        <Route path="/" element={user ? <Navigate to="/dashboard/account" /> : <LoginPage onLogin={setUser} handleGoogleLogin={handleGoogleLogin} />} />
 
         <Route path="/dashboard" element={user ? <DashboardLayout user={user} /> : <Navigate to="/" />}>
           <Route path="account" element={<Account />} />
