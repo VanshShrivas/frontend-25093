@@ -12,11 +12,18 @@ export const createActivity=catchAsyncErrors(async(req,res,next)=>{
     });
   }
   const { proof } = req.files;
-  const {type,title,description,owner}=req.body;
-  if(!type || !title || !description||!owner){
+  const {type,title,description,rollno}=req.body;
+  if(!type || !title || !description||!rollno){
     return res.status(400).json({
       success:false,
       message:"Please provide all the details",
+    });
+  }
+  const owner=await User.findOne({uniqueinstinumber:rollno});
+  if(!owner){
+    return res.status(404).json({
+      success:false,
+      message:"No user found with this roll number",
     });
   }
   if(!["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Postition of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"].includes(type)){
@@ -67,7 +74,7 @@ export const createActivity=catchAsyncErrors(async(req,res,next)=>{
       public_id:cloudinaryResponse.public_id,
       url:cloudinaryResponse.secure_url,
     },
-    owner,
+    owner:owner._id,
     createdBy:curruser._id,
   });
   if(curruser.role=='Admin')newactivity.isVerified=true;
@@ -229,7 +236,7 @@ export const updateActivity=catchAsyncErrors(async(req,res,next)=>{
             message:"You cannot update a verified activity",
         });
     }
-    const {type,title,description,owner}=req.body;
+    const {type,title,description,rollno}=req.body;
     if(type){
         if(!["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Postition of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"].includes(type)){
             return res.status(400).json({
@@ -245,8 +252,15 @@ export const updateActivity=catchAsyncErrors(async(req,res,next)=>{
     if(description){
         activity.description=description;
     }
-    if(owner){
-        activity.owner=owner;
+    if(rollno){
+      const owner=await User.findOne({uniqueinstinumber:rollno});
+      if(!owner){
+        return res.status(404).json({
+          success:false,
+          message:"No user found with this roll number",
+        });
+      }
+        activity.owner=owner._id;
     }
     let cloudinaryResponse;
     if (req.files!=null&& req.files.length!=0) {
