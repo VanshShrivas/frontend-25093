@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
-
+import axios from "axios";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBPI0qc-SeRgTSS-VgAw9sNiLT4QyBtxb4",
@@ -24,6 +24,20 @@ const handleGoogleLogin = async (setError) => {
         const domain = result.user.email.split("@")[1];
         if(["itbhu.ac.in", "iitbhu.ac.in"].includes(domain)){
           setError('')
+          const data=result.user.email;
+          await axios.post(`http://localhost:3000/api/v1/user/login`,{data}
+            ,{
+            withCredentials:true,
+            headers:{
+              'Content-Type':'application/json',
+            },
+          }).then((res)=>{
+            console.log(res);
+            console.log("login successful");
+          }).catch((err)=>{
+            console.log(err);
+            console.log("login failed");
+          })
           return result.user.email;
         }
         else{
@@ -41,6 +55,18 @@ const handleGoogleLogin = async (setError) => {
 const handlePasswordLogin = async (email, password) => {
   try {
     const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    const data=email;
+          await axios.post(`http://localhost:3000/api/v1/user/login`,{data}
+            ,{
+            withCredentials:true,
+            headers:{
+              'Content-Type':'application/json',
+            },
+          }).then((res)=>{
+            console.log("login successful");
+          }).catch((err)=>{
+            console.log("login failed");
+          })
     return userCredential.user;  // Return the user object if login is successful
   } catch (error) {
     throw new Error(error.message);  // If an error occurs, throw an error message

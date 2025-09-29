@@ -5,6 +5,15 @@ import {config} from 'dotenv';
 config({
     path:"./config/config.env"
 });
+////
+import cors from 'cors';
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 ///////databse connection
 import {connection} from './database/connection.js';
 connection();

@@ -36,7 +36,7 @@ export default function RaiseTicket() {
       file: e.target.files[0],
     }));
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Ticket Raised:", formData);

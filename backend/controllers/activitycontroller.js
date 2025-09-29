@@ -12,8 +12,8 @@ export const createActivity=catchAsyncErrors(async(req,res,next)=>{
     });
   }
   const { proof } = req.files;
-  const {type,title,description}=req.body;
-  if(!type || !title || !description){
+  const {type,title,description,owner}=req.body;
+  if(!type || !title || !description||!owner){
     return res.status(400).json({
       success:false,
       message:"Please provide all the details",
@@ -67,6 +67,7 @@ export const createActivity=catchAsyncErrors(async(req,res,next)=>{
       public_id:cloudinaryResponse.public_id,
       url:cloudinaryResponse.secure_url,
     },
+    owner,
     createdBy:curruser._id,
   });
   if(curruser.role=='Admin')newactivity.isVerified=true;
@@ -79,7 +80,7 @@ export const createActivity=catchAsyncErrors(async(req,res,next)=>{
     newactivity,
   });
 });
-//get all activities of a student
+//get all activities of a student-created by himself and also created by admin for various students
 export const getAllActivities=catchAsyncErrors(async(req,res,next)=>{
   ////this function is able to give data of activities created by a student himself and also data of all activities created by admin for various students
     const curruser=await User.findById(req.user._id).populate("Activity");
@@ -103,7 +104,7 @@ export const getAllUnverifiedActivities=catchAsyncErrors(async(req,res,next)=>{
     //         message:"Admin not found",
     //     });
     // }
-    const activities=await Activity.find({isVerified:false}).populate("createdBy","Name RollNumber email");
+    const activities=await Activity.find({isVerified:false}).populate("createdBy","Name RollNumber email").populate("verfiedBy","Name RollNumber Email").populate("owner","Name RollNumber email");
     res.status(200).json({
         success:true,
         activities,
@@ -174,14 +175,14 @@ export const getSingleActivityDetails=catchAsyncErrors(async(req,res,next)=>{
             message:"Invalid activity id",
         });
     }
-    const activity=await Activity.findById(activityId).populate("createdBy","Name RollNumber email").populate("verfiedBy","Name RollNumber Email");
+    const activity=await Activity.findById(activityId).populate("createdBy","Name RollNumber email").populate("verfiedBy","Name RollNumber Email").populate("owner","Name RollNumber email");
     if(!activity){
         return res.status(404).json({
             success:false,
             message:"Activity not found",
         });
     }
-    if(activity.createdBy._id.toString()!==req.user._id.toString() && req.user.role!=="Admin"){
+    if(activity.createdBy._id.toString()!==req.user._id.toString() && req.user.role!=="Admin"&&activity.owner.toString()!==req.user._id.toString()  ){
         return res.status(401).json({
             success:false,  
             message:"You are not authorized to view this activity",
@@ -228,7 +229,7 @@ export const updateActivity=catchAsyncErrors(async(req,res,next)=>{
             message:"You cannot update a verified activity",
         });
     }
-    const {type,title,description}=req.body;
+    const {type,title,description,owner}=req.body;
     if(type){
         if(!["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Postition of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"].includes(type)){
             return res.status(400).json({
@@ -243,6 +244,9 @@ export const updateActivity=catchAsyncErrors(async(req,res,next)=>{
     }
     if(description){
         activity.description=description;
+    }
+    if(owner){
+        activity.owner=owner;
     }
     let cloudinaryResponse;
     if (req.files!=null&& req.files.length!=0) {
@@ -313,13 +317,19 @@ export const deleteActivity=catchAsyncErrors(async(req,res,next)=>{
     //     });
     // }
     //////
+    if(activity.createdBy.toString()!==req.user._id.toString() && req.user.role!=="Admin"){
+        return res.status(401).json({
+            success:false,
+            message:"You are not authorized to delete this activity",
+        });
+    }
     if(activity.isVerified){
         return res.status(400).json({
             success:false,
             message:"You cannot delete a verified activity",
         });
     }
-    
+
     const curruser=await User.findById(req.user._id);
     if(curruser.role!=="Admin" && activity.createdBy.toString()!==req.user._id.toString()){
         return res.status(401).json({
