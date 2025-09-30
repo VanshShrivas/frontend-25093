@@ -37,5 +37,5 @@ const ActivitySchema = new mongoose.Schema({
     type:mongoose.Types.ObjectId,
     ref:"User",
   },
-},{timestamps:true});/////timestamps true automatically adds  created at and updated at functionality
+},{timestamps:true});
 export const Activity=mongoose.model("Activity",ActivitySchema);
