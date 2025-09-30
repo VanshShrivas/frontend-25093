@@ -1,0 +1,47 @@
+# Node.js modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Editor and OS generated files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Test and temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Uploads or user-generated content
+uploads/
+
+# Dependency lock files that might be regenerated
+package-lock.json
+# yarn.lock # Uncomment if you want to ignore yarn.lock and regenerate it
+
+# Secret keys or configuration files not meant for version control
+config/secrets.js
