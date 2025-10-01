@@ -12,6 +12,10 @@
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
+<<<<<<< HEAD
+    "cors": "^2.8.5",
+=======
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "express-fileupload": "^1.5.2",

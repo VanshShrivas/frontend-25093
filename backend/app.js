@@ -5,6 +5,18 @@ import {config} from 'dotenv';
 config({
     path:"./config/config.env"
 });
+<<<<<<< HEAD
+////
+import cors from 'cors';
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+=======
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
 ///////databse connection
 import {connection} from './database/connection.js';
 connection();
@@ -33,10 +45,13 @@ import user from './router/userrouter.js';
 import activity from './router/activityrouter.js';
 app.use("/api/v1/user",user);
 app.use("/api/v1/activity",activity);
+<<<<<<< HEAD
+=======
 
 
 
 
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
 /////
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running ${process.env.PORT}`);

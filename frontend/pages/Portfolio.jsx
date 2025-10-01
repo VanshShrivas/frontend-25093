@@ -2,6 +2,11 @@ import React from "react";
 
 export default function Portfolio() {
   return (
+<<<<<<< HEAD
+    <div className="bg-white p-6 rounded-xl shadow">
+      <h2 className="text-xl font-semibold text-blue-700 mb-4">Portfolio</h2>
+      <p className="text-gray-600">Here you can add and track your Portfolio.</p>
+=======
     <div className="bg-white p-6 rounded-xl shadow space-y-6">
       <h2 className="text-xl font-semibold text-blue-700 mb-4">Portfolio</h2>
       <p className="text-gray-600">
@@ -83,6 +88,7 @@ export default function Portfolio() {
           <li>Machine Learning Specialization – Coursera</li>
         </ul>
       </div>
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
     </div>
   );
 }

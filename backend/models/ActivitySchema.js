@@ -24,6 +24,14 @@ const ActivitySchema = new mongoose.Schema({
       required:true,
     }  
   },
+<<<<<<< HEAD
+  owner:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User",
+    required:true,
+  },
+=======
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
   createdBy:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User",

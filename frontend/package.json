@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",
+<<<<<<< HEAD
+    "axios": "^1.12.2",
+=======
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
     "firebase": "^12.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

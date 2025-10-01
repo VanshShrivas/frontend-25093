@@ -4,6 +4,9 @@ export default function Marksheets() {
   return (
     <div className="bg-white p-6 rounded-xl shadow">
       <h2 className="text-xl font-semibold text-blue-700 mb-4">Marksheets</h2>
+<<<<<<< HEAD
+      <p className="text-gray-600">Here you can add and track your Marksheets.</p>
+=======
       <p className="text-gray-600 mb-4">
         Here you can add and track your Marksheets.
       </p>
@@ -24,6 +27,7 @@ export default function Marksheets() {
           📄 Semester 2 Gradesheet
         </a>
       </div>
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
     </div>
   );
 }
