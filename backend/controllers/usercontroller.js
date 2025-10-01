@@ -60,15 +60,24 @@ export const createStudentUser=catchAsyncErrors(async(req,res,next)=>{
     });
 });
 export const loginuser=catchAsyncErrors(async(req,res,next)=>{
+<<<<<<< HEAD
     const {data}=req.body;
     console.log(data);
     if(!data){
+=======
+    const {email}=req.body;
+    if(!email){
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
         return res.status(400).json({
             success:false,
             message:"Please provide email to login",
         });
     }
+<<<<<<< HEAD
     const user=await User.findOne({email:data});
+=======
+    const user=await User.findOne({email});
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
     generateToken(user,"Logged in successfully",200,res);
 });
 export const logout = catchAsyncErrors(async (req, res, next) => {

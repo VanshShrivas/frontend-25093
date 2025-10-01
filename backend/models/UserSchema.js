@@ -18,10 +18,17 @@ const userSchema = new mongoose.Schema({
     type:String,
     enum:["Student","Admin"],
   },
+<<<<<<< HEAD
   Activity:[{
     type:mongoose.Schema.Types.ObjectId,
     ref:"Activity",
   }]
+=======
+  Activity:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Activity",
+  }
+>>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
 });
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
