@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const ActivitySchema = new mongoose.Schema({
   type:{
     type:String,
-    enum:["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Postition of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"],
+    enum:["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Position of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"],
     required:true,  
   },
   title:{

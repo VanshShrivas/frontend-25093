@@ -18,10 +18,10 @@ const userSchema = new mongoose.Schema({
     type:String,
     enum:["Student","Admin"],
   },
-  Activity:{
+  Activity:[{
     type:mongoose.Schema.Types.ObjectId,
     ref:"Activity",
-  }
+  }]
 });
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
