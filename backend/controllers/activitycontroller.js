@@ -36,27 +36,28 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
   }
 
   const { image } = req.files;
-  const { type, title, description } = req.body;
+  const { type, title, description, uniqueinstinumber } = req.body;
 
-  if (!type || !title || !description) {
+  if (!type || !title || !description || !uniqueinstinumber) {
     return res.status(400).json({
       success: false,
       message: "Please provide all the details",
     });
   }
-
   if (!activityTypes.includes(type)) {
     return res.status(400).json({
       success: false,
       message: "Please provide valid activity type",
     });
   }
-
   const currUser = await User.findById(req.user._id);
   if (!currUser) {
     return res.status(404).json({ success: false, message: "User not found" });
   }
-
+  const ownerUser = await User.findOne({ uniqueinstinumber: uniqueinstinumber });
+  if (!ownerUser) {
+    return res.status(404).json({ success: false, message: "Owner user not found with provided roll number" });
+  }
   let cloudinaryResponse;
   try {
     cloudinaryResponse = await cloudinary.uploader.upload(image.tempFilePath, {
@@ -78,11 +79,16 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
       public_id: cloudinaryResponse.public_id,
       url: cloudinaryResponse.secure_url,
     },
+    owner: ownerUser._id,
     createdBy: currUser._id,
   });
 
   currUser.Activity.push(newActivity._id);
   await currUser.save();
+  if(ownerUser._id.toString() !== currUser._id.toString()){
+    ownerUser.Activity.push(newActivity._id);
+    await ownerUser.save();
+  }
 
   res.status(201).json({
     success: true,
@@ -107,7 +113,7 @@ export const getAllActivities = catchAsyncErrors(async (req, res, next) => {
 export const getAllUnverifiedActivities = catchAsyncErrors(async (req, res, next) => {
   const activities = await Activity.find({ isVerified: false }).populate(
     "createdBy",
-    "Name RollNumber email"
+    "Name uniqueinstinumber email"
   );
   res.status(200).json({ success: true, activities });
 });
@@ -146,8 +152,8 @@ export const verifyActivity = catchAsyncErrors(async (req, res, next) => {
 // ---------------- GET ALL VERIFIED ACTIVITIES ----------------
 export const getAllVerifiedActivities = catchAsyncErrors(async (req, res, next) => {
   const activities = await Activity.find({ isVerified: true })
-    .populate("createdBy", "Name RollNumber email")
-    .populate("verifiedBy", "Name RollNumber email");
+    .populate("createdBy", "Name uniqueinstinumber email")
+    .populate("verifiedBy", "Name uniqueinstinumber email");
 
   res.status(200).json({ success: true, activities });
 });
@@ -155,8 +161,8 @@ export const getAllVerifiedActivities = catchAsyncErrors(async (req, res, next) 
 // ---------------- GET ALL ACTIVITIES FOR ADMIN ----------------
 export const getAllActivitiesAdmin = catchAsyncErrors(async (req, res, next) => {
   const activities = await Activity.find({})
-    .populate("createdBy", "Name RollNumber email")
-    .populate("verifiedBy", "Name RollNumber email");
+    .populate("createdBy", "Name uniqueinstinumber email")
+    .populate("verifiedBy", "Name uniqueinstinumber email");
 
   res.status(200).json({ success: true, activities });
 });
@@ -170,12 +176,12 @@ export const getSingleActivityDetails = catchAsyncErrors(async (req, res, next) 
   }
 
   const activity = await Activity.findById(activityId)
-    .populate("createdBy", "Name RollNumber email")
-    .populate("verifiedBy", "Name RollNumber email");
+    .populate("createdBy", "Name uniqueinstinumber email")
+    .populate("verifiedBy", "Name uniqueinstinumber email");
 
   if (!activity) return res.status(404).json({ success: false, message: "Activity not found" });
 
-  if (activity.createdBy._id.toString() !== req.user._id.toString() && req.user.role !== "Admin") {
+  if (req.user._id.toString() !== activity.owner.toString() && activity.createdBy._id.toString() !== req.user._id.toString() && req.user.role !== "Admin") {
     return res.status(401).json({ success: false, message: "Not authorized to view" });
   }
 
@@ -252,7 +258,6 @@ export const deleteActivity = catchAsyncErrors(async (req, res, next) => {
   if (currUser.role !== "Admin" && activity.createdBy.toString() !== req.user._id.toString()) {
     return res.status(401).json({ success: false, message: "Not authorized to delete" });
   }
-
   // Delete image from Cloudinary
   if (activity.proof && activity.proof.public_id) {
     await cloudinary.uploader.destroy(activity.proof.public_id);

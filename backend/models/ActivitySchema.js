@@ -38,7 +38,7 @@ const ActivitySchema = new mongoose.Schema({
     type:Boolean,
     default:false,
   },
-  verfiedBy:{
+  verifiedBy:{
     type:mongoose.Types.ObjectId,
     ref:"User",
   },
