@@ -18,7 +18,7 @@ export default function RaiseTicket() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    rollno:"",
+    uniqueinstinumber:"",
     image: null,
     type: "",
 
@@ -46,7 +46,7 @@ export default function RaiseTicket() {
     const data = new FormData();
     data.append("title", formData.title);
     data.append("description", formData.description);
-    data.append("rollno", formData.rollno);
+    data.append("uniqueinstinumber", formData.uniqueinstinumber);
     data.append("type", formData.type);
     if (formData.image) {
       data.append("image", formData.image);
@@ -70,7 +70,7 @@ export default function RaiseTicket() {
     setFormData({
       title: "",
       description: "",
-      rollno: "",
+      uniqueinstinumber: "",
       image: null,
       type: "",
     });
@@ -107,9 +107,9 @@ export default function RaiseTicket() {
         />
         <input
         type="number"
-          name="rollno"
+          name="uniqueinstinumber"
           placeholder="Add your institute Roll No."
-          value={formData.rollno}
+          value={formData.uniqueinstinumber}
           onChange={handleChange}
           className="border border-gray-300 rounded p-2 w-full"
         />
