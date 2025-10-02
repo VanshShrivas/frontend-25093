@@ -17,35 +17,50 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 // HANDLE GOOGLE LOGIN
-const handleGoogleLogin = async (setError) => {
-  // const navigate = useNavigate()
-    try {
-        const result = await signInWithPopup(auth, googleProvider);
-        console.log('Google sign in completed with user data -> ',result.user);
-        const domain = result.user.email.split("@")[1];
-        if(["itbhu.ac.in", "iitbhu.ac.in"].includes(domain)){
-          setError('')
-          return result.user.email;
-        }
-        else{
-          setError('Please use your institute email ID.')
-          return null
-        }
-         
-    } catch (err) {
-        console.log(err);
-        return null;
-        // setError('Google sign in failed');
-    }
-}
-
-const handlePasswordLogin = async (email, password) => {
+const handleGoogleLogin = async ({onLogin, setError}) => {
   try {
-    const userCredential = await auth.signInWithEmailAndPassword(email, password);
-    return userCredential.user;  // Return the user object if login is successful
-  } catch (error) {
-    throw new Error(error.message);  // If an error occurs, throw an error message
+    const result = await signInWithPopup(auth, googleProvider);
+    
+    const domain = result.user.email.split("@")[1];
+    
+    if (["itbhu.ac.in", "iitbhu.ac.in"].includes(domain)) {
+      const response = await fetch('http://localhost:3000/api/v1/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: result.user.email
+        }),
+        credentials: 'include' //  Cookies accept karne ke liye
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        onLogin(data.user.Name);
+        return data.user.Name;
+      } else {
+        setError(data.message || "Login failed");
+        return null;
+      }
+    } else {
+      setError("Please use your institute Email-ID");
+      return null;
+    }
+  } catch (err) {
+    setError('Google sign in failed');
+    return null;
   }
 };
 
-export { auth, googleProvider, handleGoogleLogin,handlePasswordLogin }
+// const handlePasswordLogin = async (email, password) => {
+//   try {
+//     const userCredential = await auth.signInWithEmailAndPassword(email, password);
+//     return userCredential.user;  // Return the user object if login is successful
+//   } catch (error) {
+//     throw new Error(error.message);  // If an error occurs, throw an error message
+//   }
+// };
+
+export { auth, googleProvider, handleGoogleLogin}

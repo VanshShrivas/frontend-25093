@@ -11,12 +11,10 @@ import Portfolio from "../pages/Portfolio";
 import Attendance from "../pages/Attendance";
 import RaiseTicket from "../pages/RaiseTicket";
 import MyTickets from "../pages/MyTickets";
-import {handleGoogleLogin,handlePasswordLogin} from "./Config.js";
+import {handleGoogleLogin} from "./Config.js";
 
 export default function App() {
   const [user, setUser] = useState(null);
-
-  
 
   return (
     <Router>

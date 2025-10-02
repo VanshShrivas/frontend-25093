@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function RaiseTicket() {
 
-  const categories = [
+  const types = [
     "Select Category",
   "Conferences",
   "Seminars",
@@ -19,8 +19,8 @@ export default function RaiseTicket() {
     title: "",
     description: "",
     rollno:"",
-    file: null,
-    category: "",
+    image: null,
+    type: "",
 
   });
 
@@ -35,23 +35,51 @@ export default function RaiseTicket() {
   const handleFileChange = (e) => {
     setFormData((prev) => ({
       ...prev,
-      file: e.target.files[0],
+      image: e.target.files[0],
     }));
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Ticket Raised:", formData);
-    alert("Ticket raised successfully (dummy).");
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description);
+    data.append("rollno", formData.rollno);
+    data.append("type", formData.type);
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
+
+    const response = await fetch("http://localhost:3000/api/v1/activity/createactivity", {
+      method: "POST",
+      body: data,
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit ticket");
+    }
+
+    const result = await response.json();
+    console.log("Server response:", result);
+    alert("Ticket raised successfully!");
 
     // reset form
     setFormData({
       title: "",
       description: "",
-      rollno:"",
-      file: null,
-      category: "",
+      rollno: "",
+      image: null,
+      type: "",
     });
-  };
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    alert("Something went wrong!");
+  }
+};
+
 
   return (
     <div className="bg-white p-6 rounded-xl shadow">
@@ -97,23 +125,23 @@ export default function RaiseTicket() {
               className="hidden"
             />
           </label>
-          {formData.file && (
+          {formData.image && (
             <p className="text-sm text-gray-600 mt-2">
-              Selected: <span className="font-medium">{formData.file.name}</span>
+              Selected: <span className="font-medium">{formData.image.name}</span>
             </p>
           )}
         </div>
 
         {/* Category Dropdown */}
         <select
-          name="category"
-          value={formData.category}
+          name="type"
+          value={formData.type}
           onChange={handleChange}
           className="border border-gray-300 rounded p-2 w-full"
           required
         >
           {/* <option value="">Select Category</option> */}
-          {categories.map((ele,_idx)=>(
+          {types.map((ele,_idx)=>(
             <option value={(ele=="Select Category")?"":ele} key={_idx}>{ele}</option>
           ))}
         </select>
