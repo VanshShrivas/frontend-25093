@@ -36,9 +36,9 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
   }
 
   const { image } = req.files;
-  const { type, title, description } = req.body;
+  const { type, title, description ,rollno } = req.body;
 
-  if (!type || !title || !description) {
+  if (!type || !title || !description || !rollno) {
     return res.status(400).json({
       success: false,
       message: "Please provide all the details",
@@ -74,6 +74,7 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
     type,
     title,
     description,
+    owner:rollno,
     proof: {
       public_id: cloudinaryResponse.public_id,
       url: cloudinaryResponse.secure_url,
@@ -94,7 +95,7 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
 // ---------------- GET ALL ACTIVITIES OF STUDENT ----------------
 export const getAllActivities = catchAsyncErrors(async (req, res, next) => {
   // Sort by createdAt in descending order (newest first)
-  const userActivities = await Activity.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
+  const userActivities = await Activity.find({ owner: req.user.uniqueinstinumber}).sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,

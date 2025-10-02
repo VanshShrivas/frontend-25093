@@ -12,17 +12,15 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
   const [error, setError] = useState("");
 
 const handleLogin = async () => {
-  const domain = email.split("@")[1];
-  
+  const domain = email.includes("@") ? email.split("@")[1] : "";
+
   if (allowedDomains.includes(domain)) {
     try {
-      const response = await fetch('http://localhost:3000/api/v1/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-        credentials: 'include' //  Cookies accept karne ke liye
+      const response = await fetch("http://localhost:3000/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: email }), 
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -39,6 +37,8 @@ const handleLogin = async () => {
     setError("Please use your institute email ID.");
   }
 };
+
+
   const handleButtonClick = async () => {
      try {
       const user = await handleGoogleLogin({onLogin,setError}); 

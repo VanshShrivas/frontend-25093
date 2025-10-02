@@ -69,7 +69,7 @@ export const loginuser=catchAsyncErrors(async(req,res,next)=>{
         });
     }
     try{
-    const user=await User.findOne({email});
+    const user=await User.findOne({email:data});
     generateToken(user,"Logged in successfully",200,res);}
     catch{
       return res.status(404).json({
