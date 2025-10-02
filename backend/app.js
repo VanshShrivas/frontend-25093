@@ -56,10 +56,6 @@ import user from './router/userrouter.js';
 import activity from './router/activityrouter.js';
 app.use("/api/v1/user",user);
 app.use("/api/v1/activity",activity);
-
-
-
-
 /////
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running ${process.env.PORT}`);

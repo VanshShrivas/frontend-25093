@@ -60,8 +60,9 @@ export const createStudentUser=catchAsyncErrors(async(req,res,next)=>{
     });
 });
 export const loginuser=catchAsyncErrors(async(req,res,next)=>{
-    const {email}=req.body;
-    if(!email){
+    const {data}=req.body;
+    console.log(data);
+    if(!data){
         return res.status(400).json({
             success:false,
             message:"Please provide email to login",
