@@ -1,11 +1,7 @@
 // components/LoginPage.jsx
 import React, { useState } from "react";
 import {handlePasswordLogin} from "../src/Config.js";
-<<<<<<< HEAD
 import axios from "axios";
-=======
-
->>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
 // import { useNavigate } from "react-router-dom";
 
 

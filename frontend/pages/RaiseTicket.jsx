@@ -18,15 +18,10 @@ export default function RaiseTicket() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-<<<<<<< HEAD
-    file: null,
-    category: "",
-=======
     rollno:"",
     file: null,
     category: "",
 
->>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
   });
 
   const handleChange = (e) => {
@@ -43,11 +38,6 @@ export default function RaiseTicket() {
       file: e.target.files[0],
     }));
   };
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Ticket Raised:", formData);
@@ -57,10 +47,7 @@ export default function RaiseTicket() {
     setFormData({
       title: "",
       description: "",
-<<<<<<< HEAD
-=======
       rollno:"",
->>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
       file: null,
       category: "",
     });
@@ -76,11 +63,7 @@ export default function RaiseTicket() {
           type="text"
           name="title"
           placeholder="Title"
-<<<<<<< HEAD
-          value={formData.subject}
-=======
           value={formData.title}
->>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
           onChange={handleChange}
           className="border border-gray-300 rounded p-2 w-full"
           required
@@ -94,8 +77,6 @@ export default function RaiseTicket() {
           onChange={handleChange}
           className="border border-gray-300 rounded p-2 w-full h-32"
         />
-<<<<<<< HEAD
-=======
         <input
         type="number"
           name="rollno"
@@ -104,7 +85,6 @@ export default function RaiseTicket() {
           onChange={handleChange}
           className="border border-gray-300 rounded p-2 w-full"
         />
->>>>>>> 6dd9dee3ca97462f2410e50fc40ccd69759d2000
 
         {/* File Upload (Styled) */}
         <div>
