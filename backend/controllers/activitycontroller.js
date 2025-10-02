@@ -79,7 +79,7 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
       public_id: cloudinaryResponse.public_id,
       url: cloudinaryResponse.secure_url,
     },
-    owner: ownerUser._id,
+    owner: uniqueinstinumber,
     createdBy: currUser._id,
   });
 
@@ -100,7 +100,7 @@ export const createActivity = catchAsyncErrors(async (req, res, next) => {
 // ---------------- GET ALL ACTIVITIES OF STUDENT ----------------
 export const getAllActivities = catchAsyncErrors(async (req, res, next) => {
   // Sort by createdAt in descending order (newest first)
-  const userActivities = await Activity.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
+  const userActivities = await Activity.find({ owner:req.user.uniqueinstinumber}).sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,
