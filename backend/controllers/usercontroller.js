@@ -60,15 +60,23 @@ export const createStudentUser=catchAsyncErrors(async(req,res,next)=>{
     });
 });
 export const loginuser=catchAsyncErrors(async(req,res,next)=>{
-    const {email}=req.body;
-    if(!email){
+    const {data}=req.body;
+    console.log(data);
+    if(!data){
         return res.status(400).json({
             success:false,
             message:"Please provide email to login",
         });
     }
-    const user=await User.findOne({email});
-    generateToken(user,"Logged in successfully",200,res);
+    try{
+    const user=await User.findOne({email:data});
+    generateToken(user,"Logged in successfully",200,res);}
+    catch{
+      return res.status(404).json({
+        success:false,
+        message:"No such user exists"
+      })
+    }
 });
 export const logout = catchAsyncErrors(async (req, res, next) => {
   res

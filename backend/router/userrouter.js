@@ -13,6 +13,6 @@ router.post("/createadminuser",isAuthenticated,authorizeRoles("SuperAdmin"),crea
 router.post("/createstudentuser",isAuthenticated,authorizeRoles("[SuperAdmin Admin]"),createStudentUser);
 router.post("/login",loginuser);
 router.get("/logout",isAuthenticated,logout);
-router.get("/getallstudents",isAuthenticated,authorizeRoles("Admin"),getAllStudents);
+router.get("/getallstudents",isAuthenticated,authorizeRoles("[Admin SuperAdmin]"),getAllStudents);
 router.get("/getuserdata/:id",isAuthenticated,getuserdata);
 export default router;

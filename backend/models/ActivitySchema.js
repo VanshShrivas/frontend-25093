@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const ActivitySchema = new mongoose.Schema({
   type:{
     type:String,
-    enum:["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Postition of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"],
+    enum:["Seminars","Conferences","Certifications","Workshops","Online Courses","Internships","Position of Responsibility","Club Activities/Volunteering Efforts","Competitions","Academic Contests","Community Service"],
     required:true,  
   },
   title:{
@@ -24,6 +24,10 @@ const ActivitySchema = new mongoose.Schema({
       required:true,
     }  
   },
+  owner:{
+    type:String,
+    required:true,
+  },
   createdBy:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User",
@@ -37,5 +41,5 @@ const ActivitySchema = new mongoose.Schema({
     type:mongoose.Types.ObjectId,
     ref:"User",
   },
-},{timestamps:true});/////timestamps true automatically adds  created at and updated at functionality
+},{timestamps:true});
 export const Activity=mongoose.model("Activity",ActivitySchema);

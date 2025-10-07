@@ -1,7 +1,5 @@
 // components/LoginPage.jsx
 import React, { useState } from "react";
-import {handlePasswordLogin} from "../src/Config.js";
-
 // import { useNavigate } from "react-router-dom";
 
 
@@ -13,26 +11,39 @@ export default function LoginPage({ onLogin,handleGoogleLogin }) {
   // const navigate = useNavigate();
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    const domain = email.split("@")[1];
-    if (allowedDomains.includes(domain)) {
-      const check =  handlePasswordLogin(email,password);
-      if(check)
-      onLogin(email);
-      else{
-        onLogin(null)
-      }
+const handleLogin = async () => {
+  const domain = email.includes("@") ? email.split("@")[1] : "";
 
-    } else {
-      setError("Please use your institute email ID.");
+  if (allowedDomains.includes(domain)) {
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: email }), 
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        onLogin(data.user.Name);
+      } else {
+        setError(data.message || "Login failed");
+      }
+    } catch (error) {
+      setError("Network error. Please try again.");
     }
-  };
+  } else {
+    setError("Please use your institute email ID.");
+  }
+};
+
 
   const handleButtonClick = async () => {
      try {
-      const user = await handleGoogleLogin(setError); // call function from Config.js
-      onLogin(user); //  set user state in App.jsx
-      // navigate("/dashboard/account"); //  navigate to account
+      const user = await handleGoogleLogin({onLogin,setError}); 
+      onLogin(user); 
+     
       setError("");
     } catch (err) {
       console.log(err);
