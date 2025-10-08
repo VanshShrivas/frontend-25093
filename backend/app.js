@@ -6,7 +6,7 @@ config({
     path:"./config/config.env"
 });
 import cors from 'cors';
-const allowedOrigins = ['https://frontend-25093.onrender.com/',
+const allowedOrigins = ['https://frontend-25093.onrender.com',
       'http://localhost:5173' // Example for local development
     //   'https://another-allowed-domain.net'
     ];
