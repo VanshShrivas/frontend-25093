@@ -16,7 +16,7 @@ const handleLogin = async () => {
 
   if (allowedDomains.includes(domain)) {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/user/login", {
+      const response = await fetch(`${import.meta.env.VITE_BASE_BACKEND_USER}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: email }), 

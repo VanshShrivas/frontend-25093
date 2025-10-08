@@ -4,7 +4,7 @@ import React,{useState,useEffect} from "react";
 export default function MyTickets() {
   // Dummy ticket list
   
-const base = "http://localhost:3000/api/v1/activity";
+const base = import.meta.env.VITE_BASE_BACKEND_ACTIVITY;
 const [tickets, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
