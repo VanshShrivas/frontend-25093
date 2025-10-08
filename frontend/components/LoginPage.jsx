@@ -1,73 +1,80 @@
 // components/LoginPage.jsx
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
 
 const allowedDomains = ["itbhu.ac.in", "iitbhu.ac.in"];
 
-export default function LoginPage({ onLogin,handleGoogleLogin }) {
+export default function LoginPage({ onLogin, handleGoogleLogin }) {
   const [email, setEmail] = useState("");
-  const [password,setPassword] = useState("");
-  // const navigate = useNavigate();
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-const handleLogin = async () => {
-  const domain = email.includes("@") ? email.split("@")[1] : "";
+  const handleLogin = async () => {
+    const domain = email.includes("@") ? email.split("@")[1] : "";
 
-  if (allowedDomains.includes(domain)) {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_BACKEND_USER}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: email }), 
-        credentials: "include",
-      });
+    if (allowedDomains.includes(domain)) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_BACKEND_USER}/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: email }),
+            credentials: "include",
+          }
+        );
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-        onLogin(data.user.Name);
-      } else {
-        setError(data.message || "Login failed");
+        if (data.success) {
+          onLogin(data.user.Name);
+        } else {
+          setError(data.message || "Login failed");
+        }
+      } catch (error) {
+        setError("Network error. Please try again.");
       }
-    } catch (error) {
-      setError("Network error. Please try again.");
+    } else {
+      setError("Please use your institute email ID.");
     }
-  } else {
-    setError("Please use your institute email ID.");
-  }
-};
-
+  };
 
   const handleButtonClick = async () => {
-     try {
-      const user = await handleGoogleLogin({onLogin,setError}); 
-      onLogin(user); 
-     
+    try {
+      const user = await handleGoogleLogin({ onLogin, setError });
+      onLogin(user);
       setError("");
     } catch (err) {
       console.log(err);
       setError(err.message);
     }
-  }
+  };
 
-  
-         const dividerStyle = {
-          display: 'flex',
-          alignItems: 'center',
-          textAlign: 'center',
-          margin: '25px 0',
-          color: '#aaa',
-          };
+  const dividerStyle = {
+    display: "flex",
+    alignItems: "center",
+    textAlign: "center",
+    margin: "25px 0",
+    color: "#aaa",
+  };
 
-        const lineStyle = {
-          flex: 1,
-          borderBottom: '1px solid #ddd',
-        };
+  const lineStyle = {
+    flex: 1,
+    borderBottom: "1px solid #ddd",
+  };
 
-      const spanStyle = {
-        padding: '0 10px',
-      };
+  const spanStyle = {
+    padding: "0 10px",
+  };
+
+  const infoBoxStyle = {
+    backgroundColor: "#f0f4ff",
+    padding: "15px",
+    borderRadius: "12px",
+    marginTop: "20px",
+    fontSize: "0.9rem",
+    color: "#333",
+    border: "1px solid #c3d0f0",
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-blue-50">
@@ -92,35 +99,44 @@ const handleLogin = async () => {
           className="border border-gray-300 rounded p-2 w-full mb-3"
         />
 
-      
-
-        {/* {error && <p className="text-red-500 text-sm mb-2">{error}</p>} */}
-
         <button
           onClick={handleLogin}
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Login
         </button>
-    
 
         <div style={dividerStyle}>
-            <div style={lineStyle}></div>
-            <span style={spanStyle}>Or</span>
-            <div style={lineStyle}></div>
+          <div style={lineStyle}></div>
+          <span style={spanStyle}>Or</span>
+          <div style={lineStyle}></div>
         </div>
 
-        
-        <button type="button"
-         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          onClick={handleButtonClick}>
-            {/*<img src={googleLogo} alt="Google logo"/>*/}
-
-            Sign up with Google
+        <button
+          type="button"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          onClick={handleButtonClick}
+        >
+          Sign up with Google
         </button>
 
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
+        {/* Info Box */}
+        <div style={infoBoxStyle}>
+          <p>
+            <strong>Testing Credentials:</strong>
+          </p>
+          <p>Email: <code>vedika.agarwal.cer24@itbhu.ac.in</code></p>
+          <p>Password: <code>12345</code></p>
+          <div className="text-red-400">OR</div>
+          <p>Email: <code>ved.singh.eee24@itbhu.ac.in</code></p>
+          <p>Password: <code>qwerty</code></p>
+          <p className="mt-2">
+            <strong>Note:</strong> This site accepts only institute domain emails of students
+            already entered by the admin. Please use your official email to login.
+          </p>
+        </div>
       </div>
     </div>
   );
