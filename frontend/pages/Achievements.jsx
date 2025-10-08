@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const base = "http://localhost:3000/api/v1/activity";
+const base = import.meta.env.VITE_BASE_BACKEND_ACTIVITY;
 
 export default function Achievements() {
   const [type, setCat] = useState("All");

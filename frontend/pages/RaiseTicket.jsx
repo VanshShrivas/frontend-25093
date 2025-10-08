@@ -52,7 +52,7 @@ export default function RaiseTicket() {
       data.append("image", formData.image);
     }
 
-    const response = await fetch("http://localhost:3000/api/v1/activity/createactivity", {
+    const response = await fetch(`${import.meta.env.VITE_BASE_BACKEND_ACTIVITY}/createactivity`, {
       method: "POST",
       body: data,
       credentials: "include",
