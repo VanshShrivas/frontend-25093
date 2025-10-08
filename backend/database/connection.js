@@ -10,10 +10,10 @@ export const connection = ()=> {
     })
     .then(async () => {
       console.log("Connected to database.");
-      const obj=await User.find();
-      const obj2=await Activity.find();
-      console.log(obj);
-      console.log(obj2);
+      // const obj=await User.find();
+      // const obj2=await Activity.find();
+      // console.log(obj);
+      // console.log(obj2);
     })
     .catch((err) => {
       console.log(`Some error occured while connecting to database: ${err}`);
