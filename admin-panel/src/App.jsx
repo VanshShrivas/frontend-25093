@@ -1,9 +1,11 @@
 import './App.css'
-import React from "react";
+import React,{useState} from "react";
 import AdminNavbar from '../pages/AdminNavbar';
 import Tickets from '../pages/Tickets';
 import AddActivity from '../pages/AddActivity';
 import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import LoginPage from '../pages/LoginPage';
+import { handleGoogleLogin } from './Config';
 
 function AppLayout() {
   return (
@@ -17,10 +19,13 @@ function AppLayout() {
 }
 
 function App() {
+
+  const [user,setUser] = useState(null)
+
   return (
     <Routes>
       {/* Root route redirects to admin/tickets */}
-      <Route path="/" element={<Navigate to="/admin/tickets" />} />
+      <Route path="/" element={user?<Navigate to="/admin/tickets" />: <LoginPage onLogin={setUser} handleGoogleLogin={handleGoogleLogin}/>} />
 
       <Route path="/admin" element={<AppLayout />}>
         {/* Default child route for /admin */}
